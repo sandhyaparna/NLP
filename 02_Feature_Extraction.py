@@ -402,6 +402,7 @@ similarity_df.apply(lambda row: feature_names[np.argsort(-row.values)[1:4]],
 https://medium.com/@mishra.thedeepak/doc2vec-simple-implementation-example-df2afbbfbad5
 
 ### Glove Model
+# Dipanjan
 !python -m spacy download en_vectors_web_lg
 import spacy
 nlp = spacy.load('en_vectors_web_lg')
@@ -432,6 +433,7 @@ similarity_df.apply(lambda row: feature_names[np.argsort(-row.values)[1:4]],
 
 
 ### FastText Model
+# Dipanjan
 from gensim.models.fasttext import FastText
 # Set values for various parameters
 feature_size = 15    # Word vector dimensionality  
