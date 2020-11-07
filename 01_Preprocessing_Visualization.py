@@ -416,6 +416,9 @@ Df["comment_text"].str.replace(r'[^a-zA-Z]', " ") # replaces anything other than
 # Word Tokenization - words are seperated by commas
 Df["Text_Var2"] = Df["Text_Var1"].apply(nltk.word_tokenize)   # Df["Text_Var2"] = Df["Text_Var"].str.lower().str.split() -- Same as Tokenization but . and , are attached to words as is in the text
 
+# Sentence tokenization - Each sentence is seperated by commas
+Df["Text_SentTokenize"] = Df["Text_Var1"].apply(nltk.sent_tokenize)
+
 # Removes stop words from the Text var2 i.e Tokenazied column
 Df["Text_Var3"] = Df["Text_Var2"].apply(lambda x: [item for item in x if item not in stop_words])
 
