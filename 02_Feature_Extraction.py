@@ -350,6 +350,46 @@ print(model.doesnt_match("breakfast cereal dinner lunch".split()))
 #printing similarity index
 print(model.similarity('woman', 'man'))
 
+### 2nd Word2Vec
+norm_corpus
+array(['sky blue beautiful', 'love blue beautiful sky',
+       'quick brown fox jumps lazy dog',
+       'kings breakfast sausages ham bacon eggs toast beans',
+       'love green eggs ham sausages bacon',
+       'brown fox quick blue dog lazy', 'sky blue sky beautiful today',
+       'dog lazy brown fox quick'], dtype='<U51')
+import nltk
+from gensim.models import word2vec
+tokenized_corpus = [nltk.word_tokenize(doc) for doc in norm_corpus]
+# Set values for various parameters
+feature_size = 15    # Word vector dimensionality  
+window_context = 20  # Context window size                                                                                    
+min_word_count = 1   # Minimum word count                        
+sample = 1e-3        # Downsample setting for frequent words
+sg = 1               # skip-gram model
+w2v_model = word2vec.Word2Vec(tokenized_corpus, size=feature_size, 
+                              window=window_context, min_count = min_word_count,
+                              sg=sg, sample=sample, iter=5000)
+w2v_model
+# Word2vec visualization
+import matplotlib.pyplot as plt
+%matplotlib inline
+# visualize embeddings
+from sklearn.manifold import TSNE
+words = w2v_model.wv.index2word
+wvs = w2v_model.wv[words]
+tsne = TSNE(n_components=2, random_state=42, n_iter=5000, perplexity=5)
+np.set_printoptions(suppress=True)
+T = tsne.fit_transform(wvs)
+labels = words
+plt.figure(figsize=(12, 6))
+plt.scatter(T[:, 0], T[:, 1], c='orange', edgecolors='r')
+for label, x, y in zip(labels, T[:, 0], T[:, 1]):
+    plt.annotate(label, xy=(x+1, y+1), xytext=(0, 0), textcoords='offset points')
+# Embeddings as Data Frame
+vec_df = pd.DataFrame(wvs, index=words)
+
+
 
 ### Doc2vec implementation 
 # Step by step implementation
