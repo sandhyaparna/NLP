@@ -253,6 +253,10 @@ def remove_stopwords(text, is_lower_case=False):
 
 # Convert text data into small letter
 Df["Text_Var1"] = Df["Text_Var"].str.lower()
+# Convert text to upper case
+Df["Text_Var1"] = Df["Text_Var"].str.upper()
+# Convert text to Tile case
+Df["Text_Var1"] = Df["Text_Var"].str.title()
 
 # Extract Hashtagged words into a seperate column - Should not be Tokenized
 Df["Text_Var5"] = Df["Text_Var"].str.findall(r'#.*?(?=\s|$)')
