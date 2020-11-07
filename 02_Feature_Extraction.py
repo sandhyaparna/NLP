@@ -350,7 +350,7 @@ print(model.doesnt_match("breakfast cereal dinner lunch".split()))
 #printing similarity index
 print(model.similarity('woman', 'man'))
 
-### 2nd Word2Vec
+### 2nd Word2Vec - https://github.com/dipanjanS/nlp_essentials/blob/master/notebooks/03_Text_Representation_Embedding_Models.ipynb
 norm_corpus
 array(['sky blue beautiful', 'love blue beautiful sky',
        'quick brown fox jumps lazy dog',
@@ -388,17 +388,115 @@ for label, x, y in zip(labels, T[:, 0], T[:, 1]):
     plt.annotate(label, xy=(x+1, y+1), xytext=(0, 0), textcoords='offset points')
 # Embeddings as Data Frame
 vec_df = pd.DataFrame(wvs, index=words)
-
-
+# Similarity Matrix
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+similarity_matrix = cosine_similarity(vec_df.values)
+similarity_df = pd.DataFrame(similarity_matrix, index=words, columns=words)
+feature_names = np.array(words)
+similarity_df.apply(lambda row: feature_names[np.argsort(-row.values)[1:4]], 
+                    axis=1)
 
 ### Doc2vec implementation 
 # Step by step implementation
 https://medium.com/@mishra.thedeepak/doc2vec-simple-implementation-example-df2afbbfbad5
 
 ### Glove Model
+!python -m spacy download en_vectors_web_lg
+import spacy
+nlp = spacy.load('en_vectors_web_lg')
+total_vectors = len(nlp.vocab.vectors)
+print('Total word vectors:', total_vectors)
+unique_words = list(set([word for sublist in tokenized_corpus for word in sublist]))
+word_glove_vectors = np.array([nlp(word).vector for word in unique_words])
+vec_df = pd.DataFrame(word_glove_vectors, index=unique_words)
+vec_df
+# We can now use t-SNE to visualize these embeddings similar to what we did using our Word2Vec embeddings.
+tsne = TSNE(n_components=2, random_state=42, n_iter=5000, perplexity=3)
+np.set_printoptions(suppress=True)
+T = tsne.fit_transform(word_glove_vectors)
+labels = unique_words
+plt.figure(figsize=(12, 6))
+plt.scatter(T[:, 0], T[:, 1], c='red', edgecolors='r')
+for label, x, y in zip(labels, T[:, 0], T[:, 1]):
+    plt.annotate(label, xy=(x+1, y+1), xytext=(0, 0), textcoords='offset points')
+# Looking at term semantic similarity
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+similarity_matrix = cosine_similarity(vec_df.values)
+similarity_df = pd.DataFrame(similarity_matrix, index=unique_words, columns=unique_words)
+similarity_df
+feature_names = np.array(unique_words)
+similarity_df.apply(lambda row: feature_names[np.argsort(-row.values)[1:4]], 
+                    axis=1)
 
 
-
+### FastText Model
+from gensim.models.fasttext import FastText
+# Set values for various parameters
+feature_size = 15    # Word vector dimensionality  
+window_context = 20  # Context window size                                                                                    
+min_word_count = 1   # Minimum word count                        
+sample = 1e-3        # Downsample setting for frequent words
+sg = 1               # skip-gram model
+ft_model = FastText(tokenized_corpus, size=feature_size, 
+                     window=window_context, min_count = min_word_count,
+                     sg=sg, sample=sample, iter=5000)
+ft_model
+from sklearn.manifold import TSNE
+words = ft_model.wv.index2word
+wvs = ft_model.wv[words]
+tsne = TSNE(n_components=2, random_state=42, n_iter=5000, perplexity=5)
+np.set_printoptions(suppress=True)
+T = tsne.fit_transform(wvs)
+labels = words
+plt.figure(figsize=(12, 6))
+plt.scatter(T[:, 0], T[:, 1], c='green', edgecolors='k')
+for label, x, y in zip(labels, T[:, 0], T[:, 1]):
+    plt.annotate(label, xy=(x+1, y+1), xytext=(0, 0), textcoords='offset points')
+# Document Level embeddings - Averaging 
+def average_word_vectors(words, model, vocabulary, num_features):
+    feature_vector = np.zeros((num_features,),dtype="float64")
+    nwords = 0.
+    for word in words:
+        if word in vocabulary: 
+            nwords = nwords + 1.
+            feature_vector = np.add(feature_vector, model.wv[word])
+    if nwords:
+        feature_vector = np.divide(feature_vector, nwords)
+    return feature_vector
+def averaged_word_vectorizer(corpus, model, num_features):
+    vocabulary = set(model.wv.index2word)
+    features = [average_word_vectors(tokenized_sentence, model, vocabulary, num_features)
+                    for tokenized_sentence in corpus]
+    return np.array(features)
+# get document level embeddings
+ft_doc_features = averaged_word_vectorizer(corpus=tokenized_corpus, model=ft_model,
+                                             num_features=feature_size)
+pd.DataFrame(ft_doc_features)
+# Trying out document clustering
+from sklearn.cluster import AffinityPropagation
+ap = AffinityPropagation()
+ap.fit(ft_doc_features)
+cluster_labels = ap.labels_
+cluster_labels = pd.DataFrame(cluster_labels, 
+                              columns=['ClusterLabel'])
+pd.concat([corpus_df, cluster_labels], axis=1)
+# Viz
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2, random_state=42)
+pcs = pca.fit_transform(ft_doc_features)
+labels = ap.labels_
+categories = list(corpus_df['Category'])
+plt.figure(figsize=(8, 6))
+for i in range(len(labels)):
+    label = labels[i]
+    color = 'orange' if label == 0 else 'blue' if label == 1 else 'green'
+    annotation_label = categories[i]
+    x, y = pcs[i]
+    plt.scatter(x, y, c=color, edgecolors='k')
+    plt.annotate(annotation_label, xy=(x+1e-2, y+1e-2), xytext=(0, 0), 
+                 textcoords='offset points')
 
 
 
