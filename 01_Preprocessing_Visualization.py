@@ -248,7 +248,6 @@ def remove_stopwords(text, is_lower_case=False):
     filtered_text = ' '.join(filtered_tokens)    
     return filtered_text
 
-
 # Word Tokenization should be performed first and the removal of stop words - As Text may have sentences and punctuations are split in tokenization
 
 # Convert text data into small letter
@@ -285,7 +284,17 @@ def strip_html_tags(text):
     stripped_text = soup.get_text()
     return stripped_text
 
-# Removing accented characters
+import re
+from bs4 import BeautifulSoup
+def strip_html_tags(text):
+    soup = BeautifulSoup(text, "html.parser")
+    [s.extract() for s in soup(['iframe', 'script'])]
+    stripped_text = soup.get_text()
+    stripped_text = re.sub(r'[\r|\n|\r\n]+', '\n', stripped_text)
+    return stripped_text
+clean_content = strip_html_tags(content)
+
+# Removing accented characters - Sómě Áccěntěd těxt'
 def remove_accented_chars(text):
     text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
     return text
