@@ -353,6 +353,21 @@ class RepeatReplacer(object):
     return repl_word
 replacer = RepeatReplacer()
 Df["Text_Var"] = replacer.replace(Df["Text_Var"])
+# Another version of identifying and removing repeated/duplicate characters 
+REPEAT_PATTERN = re.compile(r'(\w*)(\w)\2')
+MATCH_SUBSTITUTION = r'\1\2'
+def remove_repeated_characters(word):
+    new_word = REPEAT_PATTERN.sub(MATCH_SUBSTITUTION, word)
+    return (remove_repeated_characters(new_word) 
+               if new_word != word else new_word)
+import nltk
+def duplicate_char_remover(sentence):
+    # tokenize sentences using nltk
+    tokens = nltk.word_tokenize(sentence)
+    # remove repeated characters from each token and re-create a sentence using join
+    final_sentence = ' '.join(remove_repeated_characters(word.lower()) 
+                                  for word in tokens)
+    return final_sentence
 # Old version for repeated chars
 import re
 class RepeatReplacer(object):
