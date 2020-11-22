@@ -274,6 +274,9 @@ Df['numerics'] = Df['Text_Var'].apply(lambda x: len([x for x in x.split() if x.i
 ### Step by step implementation of CBOW, Skip-gram & word2vec
 https://towardsdatascience.com/understanding-feature-engineering-part-4-deep-learning-methods-for-text-data-96c44370bbfa
 
+# Visualization of word embeddings
+https://github.com/dipanjanS/art_of_data_visualization/blob/master/ODSC18/Code/Feature%20Engineering%20Text%20Data%20-%20Advanced%20Deep%20Learning%20Strategies.ipynb
+
 ### Continuous Bag-of-Words (CBOW)
 
 ### Training Word2vec model from documents
