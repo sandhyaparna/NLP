@@ -582,6 +582,13 @@ def expandContractions(text, c_re=c_re):
     return c_re.sub(replace, text)
 Df["Text_Var"] = Df["Text_Var"].apply(expandContractions)
 
+# Uisng tensorflow functions - uses above cList dictionary
+def replace_all(text, dic):
+    for i, j in dic.items():
+        text = tf.strings.regex_replace(text,i, j)
+    return text
+Df['Text'] = tf.map_fn(fn=lambda x: replace_all(x,cList),elems=Df['Text'])  # Applied cList here
+
 # 2nd way - Using Contractions package
 !pip install contractions
 from contractions import contractions_dict
