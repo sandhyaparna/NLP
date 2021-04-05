@@ -32,6 +32,9 @@ Df["text"].str.split()
 # Remove any leading and trailing spaces
 Df["text"] = Df["text"].apply(lambda x: x.strip())
 
+# Extract only observations that extracted something in findall instead of returning an empty list []
+Df[Df.astype(str)['TEXT_findall'] != '[]']
+
 # Remove ip address
 TrainData["comment_text"] = TrainData["comment_text"].str.replace(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", "")
 # Extract ip address in a comment and then count
