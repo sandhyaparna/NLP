@@ -121,7 +121,8 @@ ClinicalNotes_WBC['wbcRows'] = ClinicalNotes_WBC['Text_DateTimeFormatted'].str.f
 # Find next word after a specific word
 # Extract words before and after a specific word
 Df['words near'] = Df['Text'].apply(lambda x: re.findall("(\w+) xray (\w+ \w+)",str(x)))
-
+# Extract any character before and after a specific word - Number of dots correspond to number of characters that we want to extract near that word
+Df['words near'] = Df['Text'].apply(lambda x: re.findall("(.......) xray (........)",str(x))) 
 
 textToSearch = "date of service from 8/6 to 9/8/19 "
 re.findall(r'\d+/\d+/\d+', textToSearch) #textToSearch is a string
