@@ -134,6 +134,12 @@ re.findall(r'\d+/\d+/\d+', textToSearch) #textToSearch is a string
 # find the non-alphanumeric characters from the string
 re.findall("\W+",string)
 
+# Find words with both alphabets and numbers/numerics
+re.findall("(?:\d+[a-zA-Z]+|[a-zA-Z]+\d+)",str(x))
+
+# Find words with either alphabets or numerics or both alphabets and numerics - opposite of \W+
+re.findall("(?:^|(?<= ))[a-zA-Z0-9]+(?= |$)",str(x))
+
 # Difference between findall & contains - Findall looks for exact pattern
 subset of Data = UserEntered_Num[UserEntered_Num['Text_DateTimeFormatted'].str.contains(WordsList)]
 
