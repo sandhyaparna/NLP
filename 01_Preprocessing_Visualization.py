@@ -145,14 +145,14 @@ re.findall("\W+",string)
 (?= )
 # Denotes the entire space 
 (?: )
+# Any word with 5 characters i.e. represented by dot . at the beginning of the string or at the end of space and ends with space or at the end of a string
+(?:^|(?<= ))....(?= |$)
 
-
+# Find words with either only alphabets or only numerics or both alphabets and numerics
+re.findall("(?:^|(?<= ))[a-zA-Z0-9]+(?= |$)",str(x))
 
 # Find words with both alphabets and numbers/numerics
 re.findall("(?:\d+[a-zA-Z]+|[a-zA-Z]+\d+)",str(x))
-
-# Find words with either alphabets or numerics or both alphabets and numerics - opposite of \W+
-re.findall("(?:^|(?<= ))[a-zA-Z0-9]+(?= |$)",str(x))
 
 # Difference between findall & contains - Findall looks for exact pattern
 subset of Data = UserEntered_Num[UserEntered_Num['Text_DateTimeFormatted'].str.contains(WordsList)]
