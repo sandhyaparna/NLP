@@ -134,6 +134,20 @@ re.findall(r'\d+/\d+/\d+', textToSearch) #textToSearch is a string
 # find the non-alphanumeric characters from the string
 re.findall("\W+",string)
 
+## Try these in https://regex101.com/r/TZ7q1c/1 on the string "7Sand7dhy7a 7sand7dhya 7sandhya sandhya7 sand78dhya sand7dhy7a Sandy Aparna IS19S Ap3rn2a #% 987  sa@gj"
+# Denotes the beginning of a string
+(?:^)
+# Denotes end of a space
+(?<= )
+# To extract a word that is either at the beginning of a string or starts after a space
+(?:^|(?<= ))
+# Denotes start of a space
+(?= )
+# Denotes the entire space 
+(?: )
+
+
+
 # Find words with both alphabets and numbers/numerics
 re.findall("(?:\d+[a-zA-Z]+|[a-zA-Z]+\d+)",str(x))
 
