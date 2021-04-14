@@ -116,6 +116,8 @@ https://regex101.com/r/TZ7q1c/1
 Regex Cheat Sheet: https://www.rexegg.com/regex-quickstart.html
 DateTime Pattern http://strftime.org/
 https://www.analyticsvidhya.com/blog/2015/06/regular-expression-python/?utm_source=blog&utm_medium=learning-path-nlp-2020
+
+JAVASCRIPT: https://regexr.com/
     
 Import re
 
