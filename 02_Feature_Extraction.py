@@ -3,8 +3,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer()
 ## simple code
 X = vectorizer.fit_transform(TrainData.comment_text.values)
-pd.DataFrame(X.A, columns=vectorizer.get_feature_names())
-#
+Text_df = pd.DataFrame(X.A, columns=vectorizer.get_feature_names())
+
+# Another way
 X = vectorizer.fit(Df.Text_Var.values) # U can directly use X = vectorizer.fit_transform(Df.Text_Var.values)
 Y = vectorizer.transform(Df.Text_Var.values)
 vectorizer.get_feature_names()
