@@ -43,8 +43,11 @@ df['ip']=df["comment_text"].apply(lambda x: re.findall("\d{1,3}\.\d{1,3}\.\d{1,3
 df['count_ip']=df["ip"].apply(lambda x: len(x))
 
 # Remove any links (whole link is replaced)
-TrainData["comment_text"] = TrainData["comment_text"].str.replace(r"http://.*", "")
-TrainData["comment_text"] = TrainData["comment_text"].str.replace(r"https://.*", "")
+tweets_train["Text_Var"] = tweets_train["Text_Var"].str.replace('https?://\S+|www\.\S+', '')  # dont use r"http://.*"
+
+TrainData["comment_text"] = TrainData["comment_text"].str.replace(r"http://.*", "") # In this case if there is a word after the link, that word will also be replaced
+TrainData["comment_text"] = TrainData["comment_text"].str.replace(r"https://.*", "") # In this case if there is a word after the link, that word will also be replaced
+
 # Extract links
 df['link']=df["comment_text"].apply(lambda x: re.findall("http://.*com",str(x)))
 #count of links
