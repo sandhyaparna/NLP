@@ -1,4 +1,4 @@
-Run Model_Predictions_Pipeline file to classify unlabelled data as 1- Flagged for Terrorism, 0- Not flagged
+Run https://colab.research.google.com/drive/1M-IXzJmzz7zoy0ZpXghz0ZmtJsPR-Bqh?usp=sharing file to classify unlabelled data as 1- Flagged for Terrorism, 0- Not flagged
 * Run the file in Google Colab
 * Choose Runtime --> Run all
 * Please upload the below files available in the shared folder in the first 4 cells
