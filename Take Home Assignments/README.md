@@ -8,6 +8,10 @@ Run https://colab.research.google.com/drive/1M-IXzJmzz7zoy0ZpXghz0ZmtJsPR-Bqh?us
   * boston_bombing_tweets_model - saved final model 
 * After all the cells are run, test_data_predictions dataframe produces unlabelled text and their corresponding predictions
 
+Run https://colab.research.google.com/drive/1iUkgW9N6I4wThFBD7_7IXprXoPVfno6T?usp=sharing file to train labelled data 
+
+Run https://colab.research.google.com/drive/1FXWIeRvk_gI_-8ifmtPnPnZDgaIOzxCv?usp=sharing file to do exploratory data analysis 
+
 ### Exploratory_Data_Analysis file consists of analysis of the tweets variable
 * Split data into train & test based on the label variable
 * Distribution of target variable - balanced data
