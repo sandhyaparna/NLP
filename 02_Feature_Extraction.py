@@ -506,7 +506,45 @@ for i in range(len(labels)):
 
 # VectorHub - https://github.com/vector-ai/vectorhub
 
-# 
+##### Implementing skipgram skip-gram architecture using tensorflow keras
+#*** https://stackoverflow.com/questions/52542275/merging-layers-on-keras-dot-product/52542847
+# https://www.kdnuggets.com/2018/04/implementing-deep-learning-methods-feature-engineering-text-data-skip-gram.html
+from keras.layers import Input
+from keras.models import Model
+from keras.layers.embeddings import Embedding
+from keras.layers.core import Dense, Reshape
+from keras.layers import dot
+
+input_target = Input((1,))
+input_context = Input((1,))
+
+embedding = Embedding(vocab_size, embed_size, input_length=1, name='embedding')
+
+word_embedding = embedding(input_target)
+word_embedding = Reshape((embed_size, 1))(word_embedding)
+context_embedding = embedding(input_context)
+context_embedding = Reshape((embed_size, 1))(context_embedding)
+
+# now perform the dot product operation  
+dot_product = dot([word_embedding, context_embedding], axes=1)
+dot_product = Reshape((1,))(dot_product)
+
+# add the sigmoid output layer
+output = Dense(1, activation='sigmoid')(dot_product)
+
+model = Model(input=[input_target, input_context], output=output)
+model.compile(loss='mean_squared_error', optimizer='rmsprop')
+
+# view model summary
+print(model.summary())
+
+# visualize model structure
+from IPython.display import SVG
+from keras.utils.vis_utils import model_to_dot
+
+SVG(model_to_dot(model, show_shapes=True, show_layer_names=False, 
+                 rankdir='TB').create(prog='dot', format='svg'))
+
 
 
 
